@@ -24,17 +24,21 @@
   button.off { opacity: .5; }
 
   /* ---------- sentence card ---------- */
-  #card { position: absolute; top: 10vh; left: 50%; transform: translateX(-50%);
-    width: min(94vw, 1000px); padding: .5em .6em .45em; text-align: center; z-index: 4;
-    background: rgba(255,251,240,.9); border: 4px solid #c98a3a; border-radius: 28px;
-    box-shadow: 0 8px 24px rgba(120,70,20,.25); font-size: clamp(24px, 5.2vw, 60px); line-height: 1.2; }
+  #top { position: absolute; top: 17vh; left: 50%; transform: translateX(-50%); z-index: 4;
+    width: min(88vw, 780px); display: flex; flex-direction: column; align-items: center; }
+  #card { width: 100%; padding: .4em .6em .4em; text-align: center;
+    background: rgba(255,251,240,.9); border: 4px solid #c98a3a; border-radius: 24px;
+    box-shadow: 0 8px 24px rgba(120,70,20,.25); font-size: clamp(20px, 4.1vw, 46px); line-height: 1.2; }
   .blank { display: inline-block; min-width: 2.7em; border-bottom: .07em dashed #c98a3a;
     margin: 0 .05em; color: #2f8f3a; font-weight: bold; }
   .blank.filled { border-bottom-style: solid; animation: pop .45s ease-out; }
   @keyframes pop { 0% { transform: scale(.6); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
   #ru { font-size: .38em; color: #8a6a45; margin-top: .35em; min-height: 1.3em; }
   #ru.hidden { visibility: hidden; }
-  #msg { font-size: .4em; margin-top: .2em; min-height: 1.3em; color: #7a4a1a; }
+  #msg { font-size: clamp(18px, 2.6vw, 30px); margin-top: .5em; min-height: 1.3em; color: #7a4a1a;
+    padding: .1em .8em; border-radius: 999px; }
+  #msg:empty { display: none; }
+  #msg.good, #msg.bad { background: rgba(255,251,240,.9); border: 3px solid #c98a3a; }
   #msg.good { color: #2f8f3a; font-weight: bold; }
   #msg.bad { color: #c0392b; }
 
@@ -85,8 +89,8 @@
     <div class="pill"><span id="prog">1 / 12</span> &nbsp; ⭐ <span id="stars">0</span></div>
   </div>
 
-  <div id="card">
-    <div id="sentence"></div>
+  <div id="top">
+    <div id="card"><div id="sentence"></div></div>
     <div id="msg"></div>
   </div>
 
