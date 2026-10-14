@@ -35,11 +35,11 @@
   @keyframes pop { 0% { transform: scale(.6); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
   #ru { font-size: .38em; color: #8a6a45; margin-top: .35em; min-height: 1.3em; }
   #ru.hidden { visibility: hidden; }
-  #msg { font-size: clamp(18px, 2.6vw, 30px); margin-top: .5em; min-height: 1.3em; color: #7a4a1a;
-    padding: .1em .8em; border-radius: 999px; }
+  #msg { font-size: clamp(30px, 5.4vw, 64px); margin-top: .25em; min-height: 1.2em; font-weight: bold;
+    text-align: center; pointer-events: none;
+    text-shadow: 0 0 6px #fffaf0, 0 0 14px #fffaf0, 0 0 24px #fffaf0, 0 2px 0 rgba(255,250,240,.9); }
   #msg:empty { display: none; }
-  #msg.good, #msg.bad { background: rgba(255,251,240,.9); border: 3px solid #c98a3a; }
-  #msg.good { color: #2f8f3a; font-weight: bold; }
+  #msg.good { color: #2f8f3a; animation: pop .45s ease-out; }
   #msg.bad { color: #c0392b; }
 
   /* ---------- hedgehogs ---------- */
@@ -146,6 +146,15 @@ const POOL = {
 };
 const FORMS = Object.keys(POOL);
 
+/* ===================== FEEDBACK WORDS ===================== */
+const PRAISE = ["Great!", "Super!", "Well done!", "Excellent!", "Perfect!", "Awesome!", "Fantastic!", "Wonderful!", "Brilliant!", "Good job!", "Amazing!", "Cool!", "Nice one!", "Yes!"];
+const TRY_AGAIN = ["Try again!", "Not quite!", "Oops!", "Have another go!"];
+let lastWord = "";
+function pick(list) {                      // случайное слово, не повторяющее предыдущее
+  let w; do { w = list[Math.floor(Math.random() * list.length)]; } while (w === lastWord && list.length > 1);
+  lastWord = w; return w;
+}
+
 /* ===================== HELPERS ===================== */
 const $ = id => document.getElementById(id);
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -236,14 +245,15 @@ function choose(h) {
 function wrong(h) {
   mistakes++;
   h.el.classList.remove("shake"); void h.el.offsetWidth; h.el.classList.add("shake");
-  $("msg").className = "bad"; $("msg").textContent = "Try again! 🙂";
+  $("msg").className = ""; void $("msg").offsetWidth;
+  $("msg").className = "bad"; $("msg").textContent = pick(TRY_AGAIN);
 }
 
 function correct(h) {
   locked = true;
   if (mistakes === 0) { stars++; $("stars").textContent = stars; }
   const b = $("blank"); b.textContent = item.ans; b.classList.add("filled");
-  $("msg").className = "good"; $("msg").textContent = "Great! 🎉";
+  $("msg").className = "good"; $("msg").textContent = pick(PRAISE);
 
   h.el.classList.add("win", "locked");
   hogs.filter(x => x !== h).forEach(x => runAway(x, dirFor(x)));   // остальные убегают
